@@ -1,6 +1,6 @@
 # Sentinel Lab - Deepen Understanding of Systems (OS, Architecture, Rust, Go, Rhai, LLM, AIOps/MLOps, Data Eng)
 
-*A reading-first, build-as-you-go roadmap spanning (hopefully!) **18 months**. Each phase lists **subjects → mapped modules/services → resources** (Book → Blog/Docs → Video/Course). Every module is independently developable with mocks and contracts so you always see progress.*
+*A reading-first, build-as-you-go roadmap spanning (hopefully!) **20 months**. Each phase lists **subjects → mapped modules/services → resources** (Book → Blog/Docs → Video/Course). Every module is independently developable with mocks and contracts so you always see progress.*
 
 ---
 
@@ -29,7 +29,7 @@
 - **Phase 5 (Months 15-17):** Data platform & messaging + AIOps/MLOps/Data Eng foundations
 - **Phase 6 (Months 18-20):** LLM services, evaluation, hardening & SRE/MLOps in prod
 
-> Suggested weekly cadence (adapt as needed): **60% reading/notes → 40% building**.
+> Suggested weekly cadence (adapt as needed): **70% reading/notes → 30% building**.
 
 ---
 
@@ -52,7 +52,9 @@
 - **Books**: 
   - *Operating Systems: Three Easy Pieces* (Arpaci-Dusseau) - primary OS text.
   - *Computer Systems: A Programmer's Perspective (3e)* - hardware, linking, caches, concurrency from a programmer's view.
-  - *The Rust Programming Language (3e)*; *Programming Rust (2e/3e)*; *Rust for Rustaceans* - language depth & idioms.
+  - *The Rust Programming Language (3e)*
+  - *Programming Rust (2e/3e)*
+  - *Rust for Rustaceans* - language depth & idioms.
   - *The Linux Programming Interface* (Kerrisk) - system call & UNIX/Linux APIs reference.
   - *Rust Atomics and Locks* (Mara Bos) - low-level concurrency foundations.
 - **Blog/Docs**: Rust book/docs; Tokio & Axum guides; Linux perf/strace quick refs.
@@ -105,7 +107,10 @@
 - Fuzz tests on parser/bindings; sandboxing limits proven by tests.
 
 **Resources**
-- **Books**: *Domain-Specific Languages* (Fowler); *Language Implementation Patterns* (Parr); *(Windows) Windows Internals, Part 1 (7e)*.
+- **Books**: 
+  - *Domain-Specific Languages* (Fowler)
+  - *Language Implementation Patterns* (Parr)
+  - *(Windows) Windows Internals, Part 1 (7e)*.
 - **Blog/Docs**: *The Rhai Book*; Rhai plugin modules; Microsoft ETW docs; WPA/WPR primers.
 - **Video/Course** (optional): Pavel Yosifovich intro to WPA/WPR.
 
@@ -129,7 +134,9 @@
 - Security review checklist (capabilities, seccomp, kernel pinning, code-signing plan).
 
 **Resources**
-- **Books**: *Learning eBPF* (Rice); *BPF Performance Tools* (Gregg).
+- **Books**: 
+  - *Learning eBPF* (Rice)
+  - *BPF Performance Tools* (Gregg).
 - **Blog/Docs**: cilium/ebpf docs; Aya book & crate docs; ebpf.io; ETW/WPA docs.
 - **Video/Course** (optional): eBPF Summit talks on XDP & observability.
 
@@ -154,7 +161,13 @@
 - One offline job + one streaming job to materialize features; data quality gates in CI.
 
 **Resources**
-- **Books**: *Designing Data-Intensive Applications* (Kleppmann); *Fundamentals of Data Engineering* (Reis & Housley); *Streaming Systems* (Akidau et al.); *Kafka: The Definitive Guide (2e)* (Shapira et al.); *Designing Event-Driven Systems* (Stopford); *(SRE) Site Reliability Engineering + Workbook* (Google).
+- **Books**:
+  - *Designing Data-Intensive Applications* (Kleppmann)
+  - *Fundamentals of Data Engineering* (Reis & Housley)
+  - *Streaming Systems* (Akidau et al.)
+  - *Kafka: The Definitive Guide (2e)* (Shapira et al.)
+  - *Designing Event-Driven Systems* (Stopford)
+  - *(SRE) Site Reliability Engineering + Workbook* (Google).
 - **Blog/Docs**: NATS docs; Kafka intro & quickstart; Feast quickstart; Great Expectations intro/quickstart; MLflow docs (incl. GenAI/Tracing); SRE workbook chapters on SLOs.
 - **Video/Course** (optional): Confluent "Intro to Kafka"; O'Reilly talks for FDE; Google SRE videos.
 
@@ -176,7 +189,11 @@
 - Postmortem template; chaos experiment (kill pod, degrade network) with auto-recovery.
 
 **Resources**
-- **Books**: *Natural Language Processing with Transformers* (HF/O'Reilly); *Designing Machine Learning Systems* (Chip Huyen); *Machine Learning Design Patterns* (Lakshmanan et al.); *Reliable Machine Learning* (O'Reilly).
+- **Books**: 
+  - *Natural Language Processing with Transformers* (HF/O'Reilly)
+  - *Designing Machine Learning Systems* (Chip Huyen)
+  - *Machine Learning Design Patterns* (Lakshmanan et al.)
+  - *Reliable Machine Learning* (O'Reilly).
 - **Blog/Docs**: vLLM OpenAI-compatible server & quickstart; PEFT/QLoRA docs; Ragas & LangSmith evaluation guides; OpenTelemetry traces for LLMs.
 - **Video/Course** (optional): Hugging Face LLM Course; LangSmith evaluation tutorials.
 
