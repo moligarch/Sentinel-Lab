@@ -1,0 +1,47 @@
+name: Build Task
+description: Implement a vertical slice; define contracts, tests, and perf baseline.
+title: "[Build] <module>: <slice>"
+labels: ["type:build"]
+body:
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options:
+        - policy-orchestrator
+        - rust-sensor-kit
+        - rule-engine
+        - win-etw-agent
+        - net-sensors
+        - enrichment-services
+        - event-bus
+        - mlops-data
+        - observability
+        - llm-gateway
+        - eval-harness
+    validations: { required: true }
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Phase
+      options: ["P1","P2","P3","P4","P5","P6"]
+  - type: textarea
+    id: design
+    attributes:
+      label: Design sketch / interfaces / contracts
+      description: "APIs, schemas, error model, backpressure strategy"
+    validations: { required: true }
+  - type: textarea
+    id: tests
+    attributes:
+      label: Test Plan
+      description: "Unit, property, load, chaos; include perf targets"
+  - type: checkboxes
+    id: dod
+    attributes:
+      label: Definition of Done
+      options:
+        - label: README updated (module/docs/overview.md)
+        - label: Perf baseline added (module/docs/perf/REPORT.md)
+        - label: SLOs & alerts configured (observability)
+        - label: Linked to milestone & project
