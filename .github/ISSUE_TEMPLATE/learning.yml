@@ -1,0 +1,53 @@
+name: Learning Task
+description: Track a reading/video/course unit; capture summary and proof of learning.
+title: "[Learn] <resource or chapter>"
+labels: ["type:learn","phase:P1"]
+body:
+  - type: input
+    id: resource
+    attributes:
+      label: Resource
+      description: "Book chapter, blog, video, or course unit"
+      placeholder: "OSTEP Ch. 1 (Processes) — https://..."
+    validations: { required: true }
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Phase
+      options: ["P1","P2","P3","P4","P5","P6"]
+    validations: { required: true }
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module (if applicable)
+      options:
+        - policy-orchestrator
+        - rust-sensor-kit
+        - rule-engine
+        - win-etw-agent
+        - net-sensors
+        - enrichment-services
+        - event-bus
+        - mlops-data
+        - observability
+        - llm-gateway
+        - eval-harness
+  - type: textarea
+    id: goals
+    attributes:
+      label: Goals / Why
+      description: "What capability will this unlock?"
+      placeholder: "Understand processes & context switches; apply to sensor design..."
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes / Summary
+      description: "Key takeaways, definitions, diagrams or code links"
+  - type: checkboxes
+    id: dod
+    attributes:
+      label: Definition of Done
+      options:
+        - label: Summary committed under /docs/learning/
+        - label: Quiz or mini-lab committed
+        - label: Linked to milestone & project
