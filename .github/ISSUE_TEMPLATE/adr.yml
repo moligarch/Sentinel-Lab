@@ -1,0 +1,29 @@
+name: Architecture Decision Record (ADR)
+description: Propose and record an architectural decision (MADR-style).
+title: "ADR: <decision title>"
+labels: ["type:doc","adr"]
+body:
+  - type: textarea
+    id: context
+    attributes: { label: Context, description: "Problem & forces" }
+    validations: { required: true }
+  - type: textarea
+    id: options
+    attributes: { label: Options, description: "Considered alternatives" }
+  - type: textarea
+    id: decision
+    attributes: { label: Decision, description: "Chosen option & rationale" }
+    validations: { required: true }
+  - type: textarea
+    id: consequences
+    attributes: { label: Consequences, description: "Positive, negative, risks" }
+  - type: input
+    id: location
+    attributes: { label: File path", placeholder: "/docs/decisions/ADR-0002.md" }
+  - type: checkboxes
+    id: followup
+    attributes:
+      label: Follow-ups
+      options:
+        - label: Created doc file and linked this issue
+        - label: Added owners/reviewers
