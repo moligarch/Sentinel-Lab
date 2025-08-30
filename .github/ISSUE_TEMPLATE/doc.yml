@@ -1,0 +1,25 @@
+name: Documentation Note
+description: Capture decisions, notes, diagrams, or runbooks.
+title: "[Doc] <area>: <short title>"
+labels: ["type:doc"]
+body:
+  - type: dropdown
+    id: phase
+    attributes: { label: Phase, options: ["P1","P2","P3","P4","P5","P6"] }
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: "What this document covers and why it matters"
+  - type: textarea
+    id: where
+    attributes:
+      label: Where to put it
+      placeholder: "/docs/architecture/, /docs/decisions/, module/docs/operations.md, etc."
+  - type: checkboxes
+    id: attachments
+    attributes:
+      label: Extras
+      options:
+        - label: Added diagram or screenshot
+        - label: Linked references/resources
