@@ -1,7 +1,7 @@
 name: Learning Task
 description: Track a reading/video/course unit; capture summary and proof of learning.
 title: "[Learn] <resource or chapter>"
-labels: ["type:learn","phase:P1"]
+labels: ["type:learn"]
 body:
   - type: input
     id: resource
