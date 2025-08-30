@@ -219,12 +219,6 @@ Each repo exposes `make dev` with mocks for its upstream deps. Example order:
 
 ---
 
-### Notes on study style
-- Your stated preference is **Book → Blog → Video/Course**. Lists above honor that order.
-- You're a fast reader-bias for primary sources and specs; videos are optional.
-
----
-
 ### Stretch ideas (optional)
 - Stateless vs. stateful rule runs with windowed state (Ring buffer + Rhai API).
 - Rule-pack marketplace format (signing; capability manifest). 
