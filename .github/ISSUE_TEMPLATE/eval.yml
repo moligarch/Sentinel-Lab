@@ -1,0 +1,28 @@
+name: Evaluation Task
+description: Add or run evaluations (Ragas/LangSmith, perf, data quality).
+title: "[Eval] <suite or metric>: <target>"
+labels: ["type:eval"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: ["RAG/LLM","Perf","Data Quality","SLO"]
+  - type: textarea
+    id: metrics
+    attributes:
+      label: Metrics & targets
+      placeholder: "faithfulness >= 0.7, p99 <= 200ms, GX suite: all green..."
+  - type: textarea
+    id: plan
+    attributes:
+      label: Plan
+      description: "Dataset, steps, expected outputs, dashboards to update"
+  - type: checkboxes
+    id: dod
+    attributes:
+      label: Definition of Done
+      options:
+        - label: Results stored under /eval-harness/results/
+        - label: Pipeline in CI (nightly or on-change)
+        - label: Report linked in this issue
