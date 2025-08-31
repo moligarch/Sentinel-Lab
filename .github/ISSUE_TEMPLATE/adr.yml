@@ -1,6 +1,6 @@
 name: Architecture Decision Record (ADR)
 description: Propose and record an architectural decision (MADR-style).
-title: "ADR: <decision title>"
+title: "[ADR] <decision title>"
 labels: ["type:doc","adr"]
 body:
   - type: textarea
