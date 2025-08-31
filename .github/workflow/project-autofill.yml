@@ -1,0 +1,158 @@
+name: Add + Autofill Project fields
+
+on:
+  issues:
+    types: [opened, labeled]
+  pull_request:
+    types: [opened, labeled, ready_for_review]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  # Note: Project access comes from PAT (PROJECT_TOKEN), not GITHUB_TOKEN.
+
+jobs:
+  add_and_fill:
+    runs-on: ubuntu-latest
+    env:
+      OWNER_LOGIN: moligarch
+      PROJECT_NUMBER: 5
+      PROJECT_URL: https://github.com/users/moligarch/projects/5
+
+    steps:
+      # 1) Add the item to your user Project
+      - name: Add to Project
+        uses: actions/add-to-project@v1
+        with:
+          project-url: ${{ env.PROJECT_URL }}
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+
+      # 2) Fetch Project schema (id, fields, single-select options)
+      - name: Get Project metadata (fields/options)
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+        run: |
+          gh api graphql -f query='
+            query($login: String!, $number: Int!) {
+              user(login: $login) {
+                projectV2(number: $number) {
+                  id
+                  fields(first: 50) {
+                    nodes {
+                      __typename
+                      ... on ProjectV2FieldCommon { id name dataType }
+                      ... on ProjectV2SingleSelectField { id name options { id name } }
+                    }
+                  }
+                }
+              }
+            }' -f login="$OWNER_LOGIN" -F number="$PROJECT_NUMBER" > project.json
+          echo "PROJECT_ID=$(jq -r .data.user.projectV2.id project.json)" >> $GITHUB_ENV
+
+      # 3) Resolve the content node id (Issue/PR)
+      - name: Resolve content node id
+        run: |
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            echo "CONTENT_ID=${{ github.event.issue.node_id }}" >> $GITHUB_ENV
+          else
+            echo "CONTENT_ID=${{ github.event.pull_request.node_id }}" >> $GITHUB_ENV
+          fi
+
+      # 4) Find (or create) the Project item for this content
+      - name: Get or create Project item id
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+        run: |
+          after=""
+          while : ; do
+            resp=$(gh api graphql -f query='
+              query($project: ID!, $after: String) {
+                node(id: $project) {
+                  ... on ProjectV2 {
+                    items(first: 100, after: $after) {
+                      nodes { id content { __typename ... on Issue { id } ... on PullRequest { id } } }
+                      pageInfo { hasNextPage endCursor }
+                    }
+                  }
+                }
+              }' -f project="$PROJECT_ID" -f after="$after")
+            item=$(echo "$resp" | jq -r --arg CID "$CONTENT_ID" '.data.node.items.nodes[] | select(.content.id==$CID) | .id')
+            if [ -n "$item" ]; then
+              echo "ITEM_ID=$item" >> $GITHUB_ENV
+              break
+            fi
+            if [ "$(echo "$resp" | jq -r '.data.node.items.pageInfo.hasNextPage')" = "true" ]; then
+              after=$(echo "$resp" | jq -r '.data.node.items.pageInfo.endCursor')
+            else
+              break
+            fi
+          done
+          if [ -z "$ITEM_ID" ]; then
+            new=$(gh api graphql -f query='
+              mutation($project: ID!, $content: ID!) {
+                addProjectV2ItemById(input: {projectId: $project, contentId: $content}) {
+                  item { id }
+                }
+              }' -f project="$PROJECT_ID" -f content="$CONTENT_ID" | jq -r '.data.addProjectV2ItemById.item.id')
+            echo "ITEM_ID=$new" >> $GITHUB_ENV
+          fi
+
+      # 5) Map labels -> Project single-select fields
+      - name: Map labels to Project fields
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+        run: |
+          # Collect labels from the event
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            mapfile -t LABELS < <(jq -r '.issue.labels[].name' "$GITHUB_EVENT_PATH")
+          else
+            mapfile -t LABELS < <(jq -r '.pull_request.labels[].name' "$GITHUB_EVENT_PATH")
+          fi
+
+          # Helper: get field id by name
+          field_id() { jq -r --arg NAME "$1" '.data.user.projectV2.fields.nodes[] | select(.name==$NAME) | .id' project.json; }
+          # Helper: get option id by case-insensitive name
+          option_id() {
+            jq -r --arg F "$1" --arg OPT "$2" '
+              .data.user.projectV2.fields.nodes[]
+              | select(.name==$F and .__typename=="ProjectV2SingleSelectField")
+              | .options[]?
+              | select((.name==$OPT) or ((.name|ascii_downcase)==($OPT|ascii_downcase)))
+              | .id' project.json
+          }
+
+          # Map label prefixes -> Project field names
+          declare -A MAP=( ["phase"]="Phase" ["module"]="Module" ["type"]="Type" ["priority"]="Priority" )
+
+          for lbl in "${LABELS[@]}"; do
+            case "$lbl" in
+              phase:*|module:*|type:*|priority:*)
+                key="${lbl%%:*}"         # phase
+                val="${lbl#*:}"          # P1 / rule-engine / build / P0...
+                field="${MAP[$key]}"
+                fid=$(field_id "$field")
+                if [ -z "$fid" ]; then
+                  echo "Field '$field' not found; check Project fields."
+                  continue
+                fi
+                oid=$(option_id "$field" "$val")
+                if [ -z "$oid" ]; then
+                  echo "Option '$val' missing for field '$field'; add it in Project settings."
+                  continue
+                fi
+                gh api graphql -f query='
+                  mutation($project: ID!, $item: ID!, $field: ID!, $opt: String!) {
+                    updateProjectV2ItemFieldValue(
+                      input: {
+                        projectId: $project,
+                        itemId: $item,
+                        fieldId: $field,
+                        value: { singleSelectOptionId: $opt }
+                      }
+                    ) { projectV2Item { id } }
+                  }' -f project="$PROJECT_ID" -f item="$ITEM_ID" -f field="$fid" -f opt="$oid" >/dev/null
+                echo "Set $field = $val"
+                ;;
+            esac
+          done
