@@ -36,12 +36,13 @@ body:
     attributes:
       label: Test Plan
       description: "Unit, property, load, chaos; include perf targets"
-  - type: checkboxes
+  - type: textarea
     id: dod
     attributes:
       label: Definition of Done
-      options:
-        - label: README updated (module/docs/overview.md)
-        - label: Perf baseline added (module/docs/perf/REPORT.md)
-        - label: SLOs & alerts configured (observability)
-        - label: Linked to milestone & project
+      description: "Edit, add, or remove items as needed for this specific task."
+      value: |
+        - [ ] README updated (module/docs/overview.md)
+        - [ ] Perf baseline added (module/docs/perf/REPORT.md)
+        - [ ] SLOs & alerts configured (observability)
+        - [ ] Linked to milestone & project

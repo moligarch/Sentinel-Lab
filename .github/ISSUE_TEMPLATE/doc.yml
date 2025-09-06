@@ -16,10 +16,12 @@ body:
     attributes:
       label: Where to put it
       placeholder: "/docs/architecture/, /docs/decisions/, module/docs/operations.md, etc."
-  - type: checkboxes
-    id: attachments
+  - type: textarea
+    id: checklist
     attributes:
-      label: Extras
-      options:
-        - label: Added diagram or screenshot
-        - label: Linked references/resources
+      label: Checklist / Extras
+      description: "Add or remove items as needed."
+      value: |
+        - [ ] Added diagram or screenshot
+        - [ ] Linked references/resources
+        - [ ] Reviewed by a peer

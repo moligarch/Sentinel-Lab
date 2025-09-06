@@ -20,10 +20,12 @@ body:
   - type: input
     id: location
     attributes: { label: File path", placeholder: "/docs/decisions/ADR-0002.md" }
-  - type: checkboxes
+  - type: textarea
     id: followup
     attributes:
-      label: Follow-ups
-      options:
-        - label: Created doc file and linked this issue
-        - label: Added owners/reviewers
+      label: Follow-up Checklist
+      description: "Add any required implementation or documentation tasks."
+      value: |
+        - [ ] Created doc file and linked this issue
+        - [ ] Added owners/reviewers
+        - [ ] Created implementation ticket #...

@@ -18,11 +18,12 @@ body:
     attributes:
       label: Plan
       description: "Dataset, steps, expected outputs, dashboards to update"
-  - type: checkboxes
+  - type: textarea
     id: dod
     attributes:
       label: Definition of Done
-      options:
-        - label: Results stored under /eval-harness/results/
-        - label: Pipeline in CI (nightly or on-change)
-        - label: Report linked in this issue
+      description: "Adjust the checklist for this specific evaluation run."
+      value: |
+        - [ ] Results stored under /eval-harness/results/
+        - [ ] Pipeline in CI (nightly or on-change)
+        - [ ] Report linked in this issue

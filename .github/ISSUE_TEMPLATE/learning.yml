@@ -43,11 +43,12 @@ body:
     attributes:
       label: Notes / Summary
       description: "Key takeaways, definitions, diagrams or code links"
-  - type: checkboxes
+  - type: textarea
     id: dod
     attributes:
       label: Definition of Done
-      options:
-        - label: Summary committed under /docs/learning/
-        - label: Quiz or mini-lab committed
-        - label: Linked to milestone & project
+      description: "Edit this checklist to match the learning goals."
+      value: |
+        - [ ] Summary committed under /docs/learning/
+        - [ ] Quiz or mini-lab committed
+        - [ ] Linked to milestone & project
